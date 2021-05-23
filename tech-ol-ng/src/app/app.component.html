@@ -1,0 +1,18 @@
+<header>
+    <div class="title">Tech - Openlayers and Angular</div>
+</header>
+<main>
+    <div id="ol-map" class="map-container">
+
+    </div>
+</main>
+<footer>
+    <div style="border: black;">
+        <li *ngFor="let lyrName of lyrNames">{{lyrName}} {{featureCount}}</li>
+    </div>
+    <input type="button" value="Show Feature Count" (click)=showFeature()/>
+</footer>
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+</div>
