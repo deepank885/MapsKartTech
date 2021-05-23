@@ -7,8 +7,35 @@
     </div>
 </main>
 <footer>
-    <div style="border: black;">
-        <li *ngFor="let lyrName of lyrNames">{{lyrName}} {{featureCount}}</li>
+    <div id="foot-status" style="border: black; display: none;">
+        <table>
+            <thead>
+                <td>Layer Name</td>
+                <td>Feature Count</td>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>demand_point</td>
+                    <td>{{featureCountDP}}</td>
+                </tr>
+                <tr>
+                    <td>lv_oh_conductor</td>
+                    <td>{{featureCountLVOHC}}</td>
+                </tr>
+                <tr>
+                    <td>lvdb_fp</td>
+                    <td>{{featureCountLVODBFP}}</td>
+                </tr>
+                <tr>
+                    <td>pole</td>
+                    <td>{{featureCountPole}}</td>
+                </tr>
+                <tr>
+                    <td>street_light</td>
+                    <td>{{featureCountSL}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <input type="button" value="Show Feature Count" (click)=showFeature()/>
 </footer>

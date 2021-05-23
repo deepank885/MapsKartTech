@@ -6,7 +6,7 @@ import OSM from 'ol/source/OSM';
 import TileWMS from 'ol/source/TileWMS';
 import { fromLonLat } from 'ol/proj';
 import Overlay from 'ol/Overlay';
-import {WfsServiceService} from './wfs-service.service';
+import { WFSService } from './services/wfs.service';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +20,13 @@ export class AppComponent implements OnInit {
   map: Map | undefined;
   public footer: any;
   public lyrNames: any;
-  public featureCount: any;
-  
+  public featureCountDP: string | undefined;
+  public featureCountLVOHC: string | undefined;
+  public featureCountLVODBFP: string | undefined;
+  public featureCountPole: string | undefined;
+  public featureCountSL: string | undefined;
+
+  constructor(private _service: WFSService) {}
 
   ngOnInit(): void {
     var view = new View({
@@ -110,14 +115,82 @@ export class AppComponent implements OnInit {
           });
       }
     });
- 
   }
 
-  showFeature(){
+  showFeature() {
+    var footStatus = document.getElementById('foot-status');
+    if(footStatus)
+      footStatus.style.display = "block";
+
     var lyrArray = this.map?.getLayers().getArray();
-    if(lyrArray)
-      var strLayers = lyrArray[1].getProperties().source;
-      this.lyrNames = ["demand_point", "lv_oh_conductor", "lvdb_fp", "pole", "street_light"];
+    if (lyrArray) var strLayers = lyrArray[1].getProperties().source;
+    this.lyrNames = [
+      'demand_point',
+      'lv_oh_conductor',
+      'lvdb_fp',
+      'pole',
+      'street_light',
+    ];
+
+      this._service.getFeatureCount(this.lyrNames[0]).subscribe((res: any) => {
+        var lyrProperties = res.split(' ');
+        for (var lyrPrp in lyrProperties) {
+          if (lyrProperties[lyrPrp].includes('numberOfFeatures')) {
+            this.featureCountDP = lyrProperties[lyrPrp].split('=')[1];
+            if(this.featureCountDP){
+              this.featureCountDP = this.featureCountDP.replace(/"/g, '');
+            }
+          }
+        }
+      });
+
+      this._service.getFeatureCount(this.lyrNames[1]).subscribe((res: any) => {
+        var lyrProperties = res.split(' ');
+        for (var lyrPrp in lyrProperties) {
+          if (lyrProperties[lyrPrp].includes('numberOfFeatures')) {
+            this.featureCountLVOHC = lyrProperties[lyrPrp].split('=')[1];
+            if(this.featureCountLVOHC){
+              this.featureCountLVOHC = this.featureCountLVOHC.replace(/"/g, '');
+            }
+          }
+        }
+      });
+
+      this._service.getFeatureCount(this.lyrNames[2]).subscribe((res: any) => {
+        var lyrProperties = res.split(' ');
+        for (var lyrPrp in lyrProperties) {
+          if (lyrProperties[lyrPrp].includes('numberOfFeatures')) {
+            this.featureCountLVODBFP = lyrProperties[lyrPrp].split('=')[1];
+            if(this.featureCountLVODBFP){
+              this.featureCountLVODBFP = this.featureCountLVODBFP.replace(/"/g, '');
+            }
+          }
+        }
+      });
+
+      this._service.getFeatureCount(this.lyrNames[3]).subscribe((res: any) => {
+        var lyrProperties = res.split(' ');
+        for (var lyrPrp in lyrProperties) {
+          if (lyrProperties[lyrPrp].includes('numberOfFeatures')) {
+            this.featureCountPole = lyrProperties[lyrPrp].split('=')[1];
+            if(this.featureCountPole){
+              this.featureCountPole = this.featureCountPole.replace(/"/g, '');
+            }
+          }
+        }
+      });
+
+      this._service.getFeatureCount(this.lyrNames[4]).subscribe((res: any) => {
+        var lyrProperties = res.split(' ');
+        for (var lyrPrp in lyrProperties) {
+          if (lyrProperties[lyrPrp].includes('numberOfFeatures')) {
+            this.featureCountSL = lyrProperties[lyrPrp].split('=')[1];
+            if(this.featureCountSL){
+              this.featureCountSL = this.featureCountSL.replace(/"/g, '');
+            }
+          }
+        }
+      });
 
   }
 }
